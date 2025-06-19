@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gerar Termo - SolarGrid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .logo-container {
+            background-color: #08104a;
+            text-align: center;
+            padding: 30px 0;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 150px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #08104a;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: orange;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkorange;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <script>
+        function toggleFields() {
+            var tipo = document.getElementById('tipo').value;
+            document.getElementById('pf-fields').style.display = tipo === 'fisica' ? 'block' : 'none';
+            document.getElementById('pj-fields').style.display = tipo === 'juridica' ? 'block' : 'none';
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo SolarGrid">
+        </div>
+
+        <h1>Gerar Termo</h1>
+
+        <form action="/gerar" method="post" enctype="multipart/form-data">
+            <!-- Upload do Modelo Word -->
+            <label>Upload do Modelo (.docx)</label>
+            <input type="file" name="documento" accept=".docx" required>
+
+            <!-- UC e Desconto -->
+            <input type="text" name="uc" placeholder="UC / Conta Contrato">
+            <input type="text" name="desconto" placeholder="Percentual de Desconto (%)">
+
+            <!-- Tipo de contrato -->
+            <label>Tipo de Cliente:</label>
+            <select name="tipo" id="tipo" onchange="toggleFields()" required>
+                <option value="">Selecione...</option>
+                <option value="fisica">Pessoa Física</option>
+                <option value="juridica">Pessoa Jurídica</option>
+            </select>
+
+            <!-- Campos Pessoa Física -->
+            <div id="pf-fields" class="hidden">
+                <input type="text" name="nome" placeholder="Nome completo">
+                <input type="text" name="cpf" placeholder="CPF">
+                <input type="email" name="email" placeholder="E-mail">
+                <input type="text" name="telefone" placeholder="Telefone">
+                <input type="text" name="endereco" placeholder="Endereço">
+                <input type="text" name="cep" placeholder="CEP">
+            </div>
+
+            <!-- Campos Pessoa Jurídica -->
+            <div id="pj-fields" class="hidden">
+                <input type="text" name="razao_social" placeholder="Razão Social">
+                <input type="text" name="cnpj" placeholder="CNPJ">
+                <input type="text" name="endereco" placeholder="Endereço">
+                <input type="text" name="cep" placeholder="CEP">
+
+                <h3>Representante Legal:</h3>
+                <input type="text" name="nome_representante" placeholder="Nome do Representante">
+                <input type="text" name="cpf_representante" placeholder="CPF do Representante">
+                <input type="text" name="email_representante" placeholder="E-mail do Representante">
+                <input type="text" name="telefone_representante" placeholder="Telefone do Representante">
+            </div>
+
+            <button type="submit">Gerar Termo</button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
